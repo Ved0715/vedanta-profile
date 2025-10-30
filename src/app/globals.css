@@ -101,6 +101,21 @@ body {
   animation: gradient-text 3s ease infinite;
 }
 
+/* Gradient animation */
+@keyframes gradient-x {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 3s ease infinite;
+}
+
 /* Button hover effects */
 .btn-primary {
   @apply bg-gradient-to-r from-neon-blue to-neon-purple text-white font-medium px-6 py-3 rounded-lg smooth-hover;
