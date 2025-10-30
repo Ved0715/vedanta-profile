@@ -67,44 +67,6 @@ export default function TechStack() {
             ease: 'easeInOut',
           }}
         />
-
-        {/* Additional floating particles */}
-        <motion.div
-          className="absolute top-1/4 left-1/4 w-32 h-32 rounded-full opacity-20 blur-2xl"
-          style={{
-            background: 'radial-gradient(circle, rgba(168, 85, 247, 0.6) 0%, transparent 70%)',
-          }}
-          animate={{
-            x: [0, 100, 0],
-            y: [0, -50, 0],
-            scale: [1, 1.3, 1],
-            opacity: [0.1, 0.2, 0.1],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-        />
-
-        <motion.div
-          className="absolute bottom-1/4 right-1/4 w-40 h-40 rounded-full opacity-20 blur-2xl"
-          style={{
-            background: 'radial-gradient(circle, rgba(236, 72, 153, 0.6) 0%, transparent 70%)',
-          }}
-          animate={{
-            x: [0, -80, 0],
-            y: [0, 60, 0],
-            scale: [1, 1.4, 1],
-            opacity: [0.1, 0.2, 0.1],
-          }}
-          transition={{
-            duration: 12,
-            repeat: Infinity,
-            ease: 'easeInOut',
-            delay: 1,
-          }}
-        />
       </div>
 
       <div className="relative mx-auto w-full max-w-6xl z-10 overflow-visible">
@@ -254,24 +216,6 @@ export default function TechStack() {
           className="hidden md:block w-full max-w-5xl mx-auto relative"
           style={{ perspective: '1000px' }}
         >
-          {/* Floating glow effect behind icons */}
-          <motion.div
-            className="absolute inset-0 -z-10"
-            animate={{
-              background: [
-                'radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%)',
-                'radial-gradient(circle at 80% 50%, rgba(168, 85, 247, 0.1) 0%, transparent 50%)',
-                'radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.1) 0%, transparent 50%)',
-                'radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%)',
-              ],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-          />
-
           {skillRows.map((row, rowIndex) => (
             <motion.div
               key={rowIndex}
