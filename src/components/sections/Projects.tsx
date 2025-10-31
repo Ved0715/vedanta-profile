@@ -240,12 +240,12 @@ const StickyScrollReveal = () => {
 
       {/* Right Side - Sticky Sidebar (Desktop only) */}
       <div className="hidden lg:block lg:w-[35%]">
-        <div className="sticky top-28 h-fit">
+        <div className="sticky top-[25vh] h-fit w-full">
           <div className="flex w-full">
             {/* Color Indicator */}
             <div
               aria-hidden="true"
-              className="my-4 mr-4 h-[2px] min-w-6 rounded-full transition-all duration-300 ease-out"
+              className="my-4 mr-4 h-[3px] min-w-6 rounded-full transition-all duration-300 ease-out"
               style={{
                 backgroundColor: activeProject === 0 ? '#DB2777' : activeProject === 1 ? '#2932CB' : '#14B8A6',
                 transform: 'scaleX(1)',
@@ -315,6 +315,7 @@ const StickyScrollReveal = () => {
           </div>
         </div>
       </div>
+      i
     </div>
   );
 };
