@@ -142,18 +142,19 @@ const StickyScrollReveal = () => {
   const currentProject = projects[activeProject];
 
   return (
-    <div className="relative mx-auto flex w-full" ref={containerRef}>
+    <div className="w-full lg:flex lg:gap-x-12" ref={containerRef}>
       {/* Left Side - Project Cards */}
-      <div className="mx-auto flex flex-col gap-y-6 lg:max-w-[65%] lg:gap-y-24">
+      <div className="flex flex-col gap-y-6 lg:w-[65%] lg:gap-y-[15vh] lg:pr-8">
         {projects.map((project, index) => (
           <div
             key={project.id}
             data-index={index}
-            className="project-card flex w-full flex-row transition-all duration-700 ease-out mb-10"
+            className="project-card flex w-full flex-row transition-all duration-700 ease-out"
             style={{
               opacity: visibleCards.has(index) ? 1 : 0,
               transform: visibleCards.has(index) ? 'none' : 'translateY(20px) scale(0.9)',
-              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              minHeight: '60vh'
             }}
           >
             <div className="flex w-full flex-col lg:mx-10 lg:w-full">
@@ -238,9 +239,9 @@ const StickyScrollReveal = () => {
       </div>
 
       {/* Right Side - Sticky Sidebar (Desktop only) */}
-      <div className="hidden py-4 lg:sticky lg:block lg:w-[35%]">
-        <div className="sticky top-40">
-          <div className="flex">
+      <div className="hidden lg:block lg:w-[35%]">
+        <div className="sticky top-28 h-fit">
+          <div className="flex w-full">
             {/* Color Indicator */}
             <div
               aria-hidden="true"
@@ -253,7 +254,7 @@ const StickyScrollReveal = () => {
             />
 
             {/* Project Details */}
-            <div className="flex flex-col items-start lg:h-[500px]">
+            <div className="flex flex-col items-start">
               <div className="flex items-center gap-3">
                 <h3 className="font-bold font-serif text-3xl text-white transition-all duration-300 ease-out">
                   {currentProject.title}
@@ -325,11 +326,11 @@ export default function Projects() {
   return (
     <section
       ref={ref}
-      className="relative w-full min-h-screen py-20 px-4 md:px-6 bg-black"
+      className="relative w-full min-h-screen py-20 bg-black"
       id="projects"
     >
-      <div className="container mx-auto max-w-7xl">
-        {/* Section Header */}
+      {/* Section Header */}
+      <div className="container mx-auto max-w-7xl px-4 md:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -351,17 +352,15 @@ export default function Projects() {
             </span>
           </h2>
         </motion.div>
+      </div>
 
-        {/* Sticky Scroll Reveal Component */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          <StickyScrollReveal />
-        </motion.div>
+      {/* Sticky Scroll Reveal Component */}
+      <div className="container mx-auto max-w-7xl px-4 md:px-6">
+        <StickyScrollReveal />
+      </div>
 
-        {/* See more projects link */}
+      {/* See more projects link */}
+      <div className="container mx-auto max-w-7xl px-4 md:px-6">
         <motion.a
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}

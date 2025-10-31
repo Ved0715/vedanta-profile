@@ -22,7 +22,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-neutral-950 text-white overflow-x-hidden">
+    <div className="relative min-h-screen bg-neutral-950 text-white">
       {/* Cursor follower */}
       <motion.div
         className="fixed w-4 h-4 bg-blue-500/20 rounded-full pointer-events-none z-50 mix-blend-difference"
