@@ -52,20 +52,46 @@ export default function Navigation() {
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          className="relative"
         >
+          {/* Glow effect */}
+          <motion.div
+            className="absolute inset-0 rounded-full opacity-0 blur-2xl transition-opacity duration-500"
+            style={{
+              background: 'radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, rgba(168, 85, 247, 0.2) 50%, transparent 70%)',
+            }}
+            animate={{
+              opacity: scrolled ? [0.3, 0.5, 0.3] : [0.2, 0.4, 0.2],
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+
           <div className={cn(
-            "flex items-center px-6 py-3 rounded-full transition-all duration-700 ease-out",
-            "backdrop-blur-xl bg-black/40 border border-white/20",
-            "shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:shadow-[0_8px_40px_rgba(0,212,255,0.15)]",
-            scrolled && "bg-black/60 border-white/30"
+            "relative flex items-center px-3 py-2.5 rounded-full transition-all duration-700 ease-out",
+            "backdrop-blur-2xl bg-gradient-to-r from-black/50 via-black/40 to-black/50",
+            "border border-white/10",
+            "shadow-[0_8px_32px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.1)]",
+            scrolled && "bg-gradient-to-r from-black/70 via-black/60 to-black/70 border-white/20 shadow-[0_8px_40px_rgba(59,130,246,0.2),inset_0_1px_0_rgba(255,255,255,0.15)]"
           )}>
+            {/* Top gradient border */}
+            <div
+              className="absolute inset-x-0 top-0 h-px"
+              style={{
+                background: 'linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.6) 20%, rgba(168, 85, 247, 0.6) 50%, rgba(236, 72, 153, 0.6) 80%, transparent)',
+              }}
+            />
+
             {navigationItems.map((item) => (
               <motion.button
                 key={item.name}
                 onClick={() => scrollToSection(item.href)}
-                className="relative px-4 py-2 mx-1 rounded-full text-sm font-medium group"
+                className="relative px-5 py-2.5 mx-1 rounded-full text-sm font-medium group"
                 whileHover={{
-                  scale: 1.1,
+                  scale: 1.05,
                   transition: { type: "spring", stiffness: 400, damping: 10 }
                 }}
                 whileTap={{ scale: 0.95 }}
@@ -73,7 +99,11 @@ export default function Navigation() {
                 {activeSection === item.href.substring(1) && (
                   <motion.div
                     layoutId="navHighlight"
-                    className="absolute inset-0 bg-white/20 rounded-full backdrop-blur-sm"
+                    className="absolute inset-0 rounded-full"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(168, 85, 247, 0.25) 100%)',
+                      boxShadow: '0 0 20px rgba(59, 130, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
+                    }}
                     transition={{
                       type: "spring",
                       stiffness: 500,
@@ -82,27 +112,75 @@ export default function Navigation() {
                     }}
                   />
                 )}
+
+                {/* Hover glow */}
+                <motion.div
+                  className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{
+                    background: 'radial-gradient(circle at center, rgba(59, 130, 246, 0.15) 0%, transparent 70%)',
+                  }}
+                />
+
                 <span className={cn(
-                  "relative z-10 transition-colors duration-300",
+                  "relative z-10 transition-all duration-300",
                   activeSection === item.href.substring(1)
-                    ? "text-white"
-                    : "text-gray-300 group-hover:text-white"
+                    ? "text-white font-semibold"
+                    : "text-gray-400 group-hover:text-white"
                 )}>
                   {item.name}
                 </span>
               </motion.button>
             ))}
 
+            {/* Divider */}
+            <div className="w-px h-6 mx-2 bg-gradient-to-b from-transparent via-white/20 to-transparent" />
+
             <motion.a
               href={personalInfo.links.resume}
               target="_blank"
               rel="noopener noreferrer"
-              className="ml-4 flex items-center space-x-2 px-5 py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full text-white text-sm font-medium transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/30"
-              whileHover={{ scale: 1.05, y: -2 }}
+              className="relative ml-1 flex items-center space-x-2 px-5 py-2.5 rounded-full text-white text-sm font-medium overflow-hidden group"
+              whileHover={{ scale: 1.05, y: -1 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Download size={16} />
-              <span>Resume</span>
+              {/* Animated gradient background */}
+              <motion.div
+                className="absolute inset-0"
+                style={{
+                  background: 'linear-gradient(135deg, #3B82F6 0%, #8B5CF6 50%, #EC4899 100%)',
+                  backgroundSize: '200% 200%',
+                }}
+                animate={{
+                  backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "linear"
+                }}
+              />
+
+              {/* Hover shine effect */}
+              <motion.div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{
+                  background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent)',
+                  backgroundSize: '200% 100%',
+                }}
+                animate={{
+                  backgroundPosition: ['-200% 0', '200% 0'],
+                }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                }}
+              />
+
+              {/* Glow effect */}
+              <div className="absolute inset-0 rounded-full blur-lg opacity-0 group-hover:opacity-70 transition-opacity duration-300 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500" />
+
+              <Download size={16} className="relative z-10" />
+              <span className="relative z-10">Resume</span>
             </motion.a>
           </div>
         </motion.nav>
@@ -118,17 +196,36 @@ export default function Navigation() {
         <motion.button
           onClick={() => setIsOpen(!isOpen)}
           className={cn(
-            "p-4 rounded-full transition-all duration-300",
-            scrolled 
-              ? "bg-dark-card/95 backdrop-blur-xl border border-white/20" 
-              : "bg-dark-card/70 backdrop-blur-lg border border-white/10"
+            "relative p-4 rounded-full transition-all duration-300 overflow-hidden",
+            "backdrop-blur-2xl bg-gradient-to-br from-black/50 to-black/40",
+            "border shadow-[0_8px_32px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.1)]",
+            scrolled
+              ? "border-white/20 shadow-[0_8px_40px_rgba(59,130,246,0.2),inset_0_1px_0_rgba(255,255,255,0.15)]"
+              : "border-white/10"
           )}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
+          {/* Glow effect */}
           <motion.div
-            animate={{ rotate: isOpen ? 180 : 0 }}
-            transition={{ duration: 0.3 }}
+            className="absolute inset-0 rounded-full opacity-0 blur-lg"
+            style={{
+              background: 'radial-gradient(circle, rgba(59, 130, 246, 0.4) 0%, rgba(168, 85, 247, 0.3) 50%, transparent 70%)',
+            }}
+            animate={{
+              opacity: isOpen ? [0.4, 0.6, 0.4] : [0.2, 0.4, 0.2],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+
+          <motion.div
+            animate={{ rotate: isOpen ? 90 : 0 }}
+            transition={{ duration: 0.3, type: "spring", stiffness: 200 }}
+            className="relative z-10"
           >
             {isOpen ? (
               <X size={24} className="text-white" />
@@ -153,35 +250,77 @@ export default function Navigation() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/80 backdrop-blur-md"
+              className="absolute inset-0 bg-black/90 backdrop-blur-xl"
               onClick={() => setIsOpen(false)}
             />
-            
+
             <motion.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="absolute right-0 top-0 h-full w-80 max-w-[90vw] bg-neutral-900/95 backdrop-blur-xl border-l border-white/20 shadow-2xl"
+              className="absolute right-0 top-0 h-full w-80 max-w-[90vw] overflow-hidden"
             >
-              <div className="flex flex-col h-full pt-24 px-6">
-                <div className="space-y-3">
+              {/* Background with gradient */}
+              <div className="absolute inset-0 bg-gradient-to-br from-black/95 via-neutral-900/95 to-black/95 backdrop-blur-2xl" />
+
+              {/* Border */}
+              <div className="absolute inset-y-0 left-0 w-px bg-gradient-to-b from-transparent via-blue-500/50 to-transparent" />
+
+              {/* Glow effect */}
+              <div className="absolute top-1/4 -left-20 w-40 h-40 bg-blue-500/20 rounded-full blur-3xl" />
+              <div className="absolute bottom-1/4 -left-20 w-40 h-40 bg-purple-500/20 rounded-full blur-3xl" />
+
+              <div className="relative flex flex-col h-full pt-24 px-6">
+                <div className="space-y-2">
                   {navigationItems.map((item, index) => (
                     <motion.button
                       key={item.name}
                       initial={{ opacity: 0, x: 50 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
+                      transition={{ delay: index * 0.1, type: 'spring', stiffness: 100 }}
                       onClick={() => scrollToSection(item.href)}
                       className={cn(
-                        "w-full text-left px-5 py-3.5 rounded-lg font-medium text-base transition-all duration-300",
-                        "hover:bg-white/10 hover:translate-x-1",
+                        "relative w-full text-left px-5 py-3.5 rounded-xl font-medium text-base transition-all duration-300 overflow-hidden group",
                         activeSection === item.href.substring(1)
-                          ? "text-blue-400 bg-white/10 border-l-2 border-blue-400"
-                          : "text-gray-300"
+                          ? "text-white"
+                          : "text-gray-400"
                       )}
                     >
-                      {item.name}
+                      {/* Active background */}
+                      {activeSection === item.href.substring(1) && (
+                        <motion.div
+                          layoutId="mobileNavHighlight"
+                          className="absolute inset-0 rounded-xl"
+                          style={{
+                            background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(168, 85, 247, 0.2) 100%)',
+                            boxShadow: '0 0 20px rgba(59, 130, 246, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+                          }}
+                          transition={{
+                            type: "spring",
+                            stiffness: 400,
+                            damping: 30
+                          }}
+                        />
+                      )}
+
+                      {/* Hover effect */}
+                      <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/5" />
+
+                      {/* Border indicator */}
+                      {activeSection === item.href.substring(1) && (
+                        <motion.div
+                          layoutId="mobileNavBorder"
+                          className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 rounded-r-full bg-gradient-to-b from-blue-400 to-purple-400"
+                          transition={{
+                            type: "spring",
+                            stiffness: 400,
+                            damping: 30
+                          }}
+                        />
+                      )}
+
+                      <span className="relative z-10">{item.name}</span>
                     </motion.button>
                   ))}
                 </div>
@@ -193,11 +332,31 @@ export default function Navigation() {
                   href={personalInfo.links.resume}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-8 flex items-center justify-center space-x-2 px-5 py-3.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg text-white font-medium transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/30 hover:scale-105"
+                  className="relative mt-8 flex items-center justify-center space-x-2 px-5 py-3.5 rounded-xl text-white font-medium overflow-hidden group"
                   onClick={() => setIsOpen(false)}
                 >
-                  <Download size={18} />
-                  <span>Download Resume</span>
+                  {/* Animated gradient background */}
+                  <motion.div
+                    className="absolute inset-0"
+                    style={{
+                      background: 'linear-gradient(135deg, #3B82F6 0%, #8B5CF6 50%, #EC4899 100%)',
+                      backgroundSize: '200% 200%',
+                    }}
+                    animate={{
+                      backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "linear"
+                    }}
+                  />
+
+                  {/* Glow effect */}
+                  <div className="absolute inset-0 rounded-xl blur-lg opacity-50 group-hover:opacity-70 transition-opacity duration-300 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500" />
+
+                  <Download size={18} className="relative z-10" />
+                  <span className="relative z-10">Download Resume</span>
                 </motion.a>
               </div>
             </motion.div>
