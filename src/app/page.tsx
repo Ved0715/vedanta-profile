@@ -7,6 +7,7 @@ import Hero from '@/components/sections/Hero';
 import About from '@/components/sections/About';
 import TechStack from '@/components/sections/TechStack';
 import Projects from '@/components/sections/Projects';
+import Testimonials from '@/components/sections/Testimonials';
 import Contact from '@/components/sections/Contact';
 
 export default function HomePage() {
@@ -47,7 +48,7 @@ export default function HomePage() {
 
       <Navigation />
       
-      <main>
+      <main className="">
         <section id="home">
           <Hero />
         </section>
@@ -62,6 +63,10 @@ export default function HomePage() {
 
         <section id="projects">
           <Projects />
+        </section>
+
+        <section id="testimonials">
+          <Testimonials />
         </section>
 
         <section id="contact">

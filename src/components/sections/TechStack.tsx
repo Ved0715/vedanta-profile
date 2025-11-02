@@ -49,7 +49,7 @@ export default function TechStack() {
   ];
 
   return (
-    <section ref={ref} className="relative min-h-screen flex flex-col items-center justify-center py-20 px-4 md:px-6 bg-black">
+    <section ref={ref} className="relative min-h-screen flex flex-col items-center justify-center py-15 px-4 md:px-6 bg-black">
       {/* Background gradient */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <motion.div

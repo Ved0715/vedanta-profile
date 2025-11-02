@@ -144,7 +144,7 @@ const StickyScrollReveal = () => {
   return (
     <div className="w-full lg:flex lg:gap-x-12" ref={containerRef}>
       {/* Left Side - Project Cards */}
-      <div className="flex flex-col gap-y-6 lg:w-[65%] lg:gap-y-[15vh] lg:pr-8">
+      <div className="flex flex-col gap-y-6 lg:w-[65%] lg:gap-y-[20vh]">
         {projects.map((project, index) => (
           <div
             key={project.id}
@@ -157,7 +157,7 @@ const StickyScrollReveal = () => {
               minHeight: '60vh'
             }}
           >
-            <div className="flex w-full flex-col lg:mx-10 lg:w-full">
+            <div className="flex w-full flex-col lg:w-full">
               <a
                 draggable="false"
                 className="group relative block cursor-pointer overflow-hidden rounded-2xl border border-white/15 bg-[#f2f2f20c] p-1 shadow-2xl lg:rounded-3xl lg:p-2 w-full"
@@ -315,7 +315,6 @@ const StickyScrollReveal = () => {
           </div>
         </div>
       </div>
-      i
     </div>
   );
 };
