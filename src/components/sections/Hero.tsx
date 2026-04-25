@@ -25,9 +25,9 @@ export default function Hero() {
         {/* Large blur orb - center top */}
         <div
           aria-hidden="true"
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 h-[500px] w-[1400px] opacity-20 blur-[150px]"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 h-[500px] w-[1400px] opacity-10 blur-[150px]"
           style={{
-            background: 'radial-gradient(circle, rgba(99, 102, 241, 0.8) 0%, rgba(139, 92, 246, 0.4) 30%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 30%, transparent 70%)',
           }}
         />
 
@@ -36,8 +36,8 @@ export default function Hero() {
           className="absolute inset-0"
           style={{
             backgroundImage: `
-              linear-gradient(rgba(99, 102, 241, 0.03) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(99, 102, 241, 0.03) 1px, transparent 1px)
+              linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px)
             `,
             backgroundSize: '100px 100px',
             maskImage: 'radial-gradient(ellipse 80% 60% at 50% 50%, black 40%, transparent 100%)',
@@ -49,7 +49,7 @@ export default function Hero() {
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: 'radial-gradient(circle, rgba(147, 51, 234, 0.2) 1px, transparent 1px)',
+            backgroundImage: 'radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px)',
             backgroundSize: '50px 50px',
             maskImage: 'radial-gradient(ellipse 80% 50% at 50% 50%, black, transparent)',
             WebkitMaskImage: 'radial-gradient(ellipse 80% 50% at 50% 50%, black, transparent)',
@@ -86,7 +86,7 @@ export default function Hero() {
           <span className="md:text-nowrap">Building intelligent systems</span>
           <br className="hidden md:block" />
           {' '}that bridge{' '}
-          <span className="bg-gradient-to-b from-blue-400 via-purple-400 to-violet-400 bg-clip-text text-transparent italic tracking-tight">
+          <span className="bg-gradient-to-br from-white via-neutral-300 to-neutral-600 bg-clip-text text-transparent italic tracking-tight">
             AI and Enterprise Scale
           </span>
         </motion.h2>

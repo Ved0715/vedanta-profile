@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Download } from 'lucide-react';
 import { navigationItems, personalInfo } from '@/data/personal';
@@ -11,35 +11,92 @@ export default function Navigation() {
   const [activeSection, setActiveSection] = useState('home');
   const [scrolled, setScrolled] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
+  // Throttle scroll with RAF to avoid excessive re-renders
+  const rafRef = useRef<number | null>(null);
+  const activeSectionRef = useRef(activeSection);
+  const scrolledRef = useRef(scrolled);
+  
+  // Pause scroll spy during click navigation
+  const isClickScrolling = useRef(false);
+  const clickScrollTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  const handleScroll = useCallback(() => {
+    if (rafRef.current) return;
+
+    rafRef.current = requestAnimationFrame(() => {
       const offset = window.scrollY;
-      setScrolled(offset > 50);
+      const isScrolled = offset > 50;
 
-      // Update active section based on scroll position
-      const sections = navigationItems.map(item => item.href.substring(1));
-      const current = sections.find(section => {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          return rect.top <= 100 && rect.bottom >= 100;
-        }
-        return false;
-      });
-      if (current) {
-        setActiveSection(current);
+      if (isScrolled !== scrolledRef.current) {
+        scrolledRef.current = isScrolled;
+        setScrolled(isScrolled);
       }
-    };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+      // Skip active section updates if we are actively scrolling via click
+      if (!isClickScrolling.current) {
+        // Update active section based on scroll position
+        const sections = navigationItems.map(item => item.href.substring(1));
+        const reversedSections = [...sections].reverse();
+        const current = reversedSections.find(section => {
+          const element = document.getElementById(section);
+          if (element) {
+            const rect = element.getBoundingClientRect();
+            return rect.top <= 150;
+          }
+          return false;
+        });
+
+        if (current && current !== activeSectionRef.current) {
+          activeSectionRef.current = current;
+          setActiveSection(current);
+        }
+      }
+
+      rafRef.current = null;
+    });
   }, []);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      if (clickScrollTimeout.current) clearTimeout(clickScrollTimeout.current);
+    };
+  }, [handleScroll]);
 
   const scrollToSection = (href: string) => {
     const targetId = href.substring(1);
     const element = document.getElementById(targetId);
+    
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      // Immediately highlight the clicked section and pause scroll spying
+      if (clickScrollTimeout.current) clearTimeout(clickScrollTimeout.current);
+      isClickScrolling.current = true;
+      setActiveSection(targetId);
+      activeSectionRef.current = targetId;
+
+      // Re-enable scroll spy slightly after the 1.5s smooth scroll completes
+      clickScrollTimeout.current = setTimeout(() => {
+        isClickScrolling.current = false;
+      }, 1600);
+
+      const lenis = (window as any).lenis;
+      
+      if (lenis) {
+        lenis.scrollTo(element, { 
+          offset: -100,
+          duration: 1.5,
+          easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+        });
+      } else {
+        const navbarOffset = 100;
+        const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({
+          top: elementPosition - navbarOffset,
+          behavior: 'smooth',
+        });
+      }
     }
     setIsOpen(false);
   };
@@ -54,34 +111,29 @@ export default function Navigation() {
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           className="relative"
         >
-          {/* Glow effect */}
-          <motion.div
-            className="absolute inset-0 rounded-full opacity-0 blur-2xl transition-opacity duration-500"
+          {/* Glow effect - pure CSS animation for performance */}
+          <div
+            className="absolute inset-0 rounded-full blur-xl pointer-events-none"
             style={{
-              background: 'radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, rgba(168, 85, 247, 0.2) 50%, transparent 70%)',
-            }}
-            animate={{
-              opacity: scrolled ? [0.3, 0.5, 0.3] : [0.2, 0.4, 0.2],
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              ease: "easeInOut"
+              background: 'radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 60%)',
+              opacity: scrolled ? 0.4 : 0.25,
+              animation: 'navGlow 3s ease-in-out infinite',
+              transition: 'opacity 0.5s ease',
             }}
           />
 
           <div className={cn(
             "relative flex items-center px-3 py-2.5 rounded-full transition-all duration-700 ease-out",
-            "backdrop-blur-2xl bg-gradient-to-r from-black/50 via-black/40 to-black/50",
+            "backdrop-blur-xl bg-gradient-to-r from-black/50 via-black/40 to-black/50",
             "border border-white/10",
-            "shadow-[0_8px_32px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.1)]",
-            scrolled && "bg-gradient-to-r from-black/70 via-black/60 to-black/70 border-white/20 shadow-[0_8px_40px_rgba(59,130,246,0.2),inset_0_1px_0_rgba(255,255,255,0.15)]"
+            "shadow-[0_8px_32px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.05)]",
+            scrolled && "bg-black/80 border-white/10 shadow-[0_8px_40px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.1)]"
           )}>
             {/* Top gradient border */}
             <div
               className="absolute inset-x-0 top-0 h-px"
               style={{
-                background: 'linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.6) 20%, rgba(168, 85, 247, 0.6) 50%, rgba(236, 72, 153, 0.6) 80%, transparent)',
+                background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3) 50%, transparent)',
               }}
             />
 
@@ -101,8 +153,8 @@ export default function Navigation() {
                     layoutId="navHighlight"
                     className="absolute inset-0 rounded-full"
                     style={{
-                      background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(168, 85, 247, 0.25) 100%)',
-                      boxShadow: '0 0 20px rgba(59, 130, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
+                      background: 'rgba(255, 255, 255, 0.1)',
+                      boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15)'
                     }}
                     transition={{
                       type: "spring",
@@ -206,19 +258,14 @@ export default function Navigation() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          {/* Glow effect */}
-          <motion.div
-            className="absolute inset-0 rounded-full opacity-0 blur-lg"
+          {/* Glow effect - CSS animation for performance */}
+          <div
+            className="absolute inset-0 rounded-full blur-md pointer-events-none"
             style={{
               background: 'radial-gradient(circle, rgba(59, 130, 246, 0.4) 0%, rgba(168, 85, 247, 0.3) 50%, transparent 70%)',
-            }}
-            animate={{
-              opacity: isOpen ? [0.4, 0.6, 0.4] : [0.2, 0.4, 0.2],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: "easeInOut"
+              opacity: isOpen ? 0.5 : 0.3,
+              animation: 'navGlow 2s ease-in-out infinite',
+              transition: 'opacity 0.3s ease',
             }}
           />
 

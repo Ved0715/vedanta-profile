@@ -8,6 +8,7 @@ import { personalInfo } from '@/data/personal';
 export default function About() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const isCurrentlyInView = useInView(ref, { once: false, margin: '200px' });
   const [isHovered, setIsHovered] = useState(false);
 
   // Mouse tracking for image
@@ -84,12 +85,12 @@ export default function About() {
         <motion.div
           className="absolute top-1/3 left-1/4 w-96 h-96 rounded-full opacity-10 blur-3xl"
           style={{
-            background: 'radial-gradient(circle, rgba(139, 92, 246, 0.6) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%)',
           }}
-          animate={{
+          animate={isCurrentlyInView ? {
             scale: [1, 1.2, 1],
             opacity: [0.08, 0.12, 0.08],
-          }}
+          } : { opacity: 0 }}
           transition={{
             duration: 8,
             repeat: Infinity,
@@ -128,7 +129,7 @@ export default function About() {
               }}
             >
               GenAI Engineer and a little bit of{' '}
-              <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent italic">
+              <span className="bg-gradient-to-r from-neutral-100 to-neutral-500 bg-clip-text text-transparent italic">
                 everything
               </span>
             </motion.h2>
@@ -262,10 +263,10 @@ export default function About() {
               {/* Floating elements */}
               <motion.div
                 className="absolute -top-4 -right-4 w-8 h-8 rounded-full bg-blue-400/80 blur-sm"
-                animate={{
+                animate={isCurrentlyInView ? {
                   y: [0, -10, 0],
                   opacity: [0.6, 1, 0.6],
-                }}
+                } : { opacity: 0.6 }}
                 transition={{
                   duration: 3,
                   repeat: Infinity,
@@ -277,10 +278,10 @@ export default function About() {
               />
               <motion.div
                 className="absolute -bottom-4 -left-4 w-6 h-6 rounded-full bg-purple-400/80 blur-sm"
-                animate={{
+                animate={isCurrentlyInView ? {
                   y: [0, 10, 0],
                   opacity: [0.5, 0.9, 0.5],
-                }}
+                } : { opacity: 0.5 }}
                 transition={{
                   duration: 4,
                   repeat: Infinity,

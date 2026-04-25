@@ -1,61 +1,89 @@
-'use client';
+"use client";
 
-import { motion, useInView, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 
 export default function TechStack() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const hasEntered = useInView(ref, { once: true, margin: "-100px" });
+  const isCurrentlyInView = useInView(ref, { once: false, margin: "200px" }); // Used to pause off-screen animations
 
   const decorativeRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: decorativeRef,
-    offset: ["start end", "end start"]
+    offset: ["start end", "end start"],
   });
 
   const rotate = useTransform(scrollYProgress, [0, 1], [0, 360]);
 
   // AI/ML & Data Science skills
   const aiSkills = [
-    'python', 'tensorflow', 'pytorch', 'scikitlearn',
-    'opencv', 'numpy', 'pandas'
+    "python",
+    "tensorflow",
+    "pytorch",
+    "scikitlearn",
+    "opencv",
+    "numpy",
+    "pandas",
   ];
 
   // Frontend skills
   const frontendSkills = [
-    'react', 'nextjs', 'typescript', 'tailwindcss',
-    'css', 'html', 'javascript', 'framer'
+    "react",
+    "nextjs",
+    "typescript",
+    "tailwindcss",
+    "css",
+    "html",
+    "javascript",
+    "framer",
   ];
 
   // Backend & Database skills
   const backendSkills = [
-    'nodejs', 'expressjs', 'fastapi', 'postgresql',
-    'mongodb', 'redis', 'prisma', 'docker'
+    "nodejs",
+    "expressjs",
+    "fastapi",
+    "postgresql",
+    "mongodb",
+    "redis",
+    "prisma",
+    "docker",
   ];
 
   // DevOps & Tools
   const devopsSkills = [
-    'git', 'github', 'githubactions', 'vercel',
-    'aws', 'cloudflare', 'figma', 'vscode'
+    "git",
+    "github",
+    "githubactions",
+    "vercel",
+    "aws",
+    "cloudflare",
+    "figma",
+    "vscode",
   ];
 
-  const allSkills = [...aiSkills, ...frontendSkills, ...backendSkills, ...devopsSkills];
-
-  const skillRows = [
-    aiSkills,
-    frontendSkills,
-    backendSkills,
-    devopsSkills
+  const allSkills = [
+    ...aiSkills,
+    ...frontendSkills,
+    ...backendSkills,
+    ...devopsSkills,
   ];
+
+  const skillRows = [aiSkills, frontendSkills, backendSkills, devopsSkills];
 
   return (
-    <section ref={ref} className="relative min-h-screen flex flex-col items-center justify-center py-15 px-4 md:px-6 bg-black">
+    <section
+      ref={ref}
+      className="relative min-h-screen flex flex-col items-center justify-center py-15 px-4 md:px-6 bg-black"
+    >
       {/* Background gradient */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <motion.div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full opacity-10 blur-3xl"
           style={{
-            background: 'radial-gradient(circle, rgba(59, 130, 246, 0.6) 0%, transparent 70%)',
+            background:
+              "radial-gradient(circle, rgba(59, 130, 246, 0.6) 0%, transparent 70%)",
           }}
           animate={{
             scale: [1, 1.2, 1],
@@ -64,7 +92,7 @@ export default function TechStack() {
           transition={{
             duration: 8,
             repeat: Infinity,
-            ease: 'easeInOut',
+            ease: "easeInOut",
           }}
         />
       </div>
@@ -75,8 +103,10 @@ export default function TechStack() {
           <div
             className="relative"
             style={{
-              maskImage: 'linear-gradient(to top, transparent, black 50%, black 90%, transparent)',
-              WebkitMaskImage: 'linear-gradient(to top, transparent, black 50%, black 90%, transparent)',
+              maskImage:
+                "linear-gradient(to top, transparent, black 50%, black 90%, transparent)",
+              WebkitMaskImage:
+                "linear-gradient(to top, transparent, black 50%, black 90%, transparent)",
             }}
           >
             <motion.div
@@ -99,26 +129,39 @@ export default function TechStack() {
                     style={{
                       transform: `rotate(${angle}deg) translateX(${120 + i * 10}px)`,
                     }}
-                    animate={{
-                      scale: [1, 1.2, 1],
-                      opacity: [0.4, 0.8, 0.4],
-                    }}
+                    animate={
+                      isCurrentlyInView
+                        ? {
+                            scale: [1, 1.2, 1],
+                            opacity: [0.4, 0.8, 0.4],
+                          }
+                        : {
+                            scale: 1,
+                            opacity: 0.4,
+                          }
+                    }
                     transition={{
                       duration: 3,
                       repeat: Infinity,
                       delay: i * 0.2,
-                      ease: 'easeInOut',
+                      ease: "easeInOut",
                     }}
                   >
                     <div
                       className={`w-3 h-3 rounded-full ${
-                        i % 3 === 0 ? 'bg-blue-400' : i % 3 === 1 ? 'bg-purple-400' : 'bg-pink-400'
+                        i % 3 === 0
+                          ? "bg-blue-400"
+                          : i % 3 === 1
+                            ? "bg-purple-400"
+                            : "bg-pink-400"
                       } blur-sm`}
                       style={{
                         boxShadow: `0 0 20px 2px ${
-                          i % 3 === 0 ? 'rgba(59, 130, 246, 0.6)' :
-                          i % 3 === 1 ? 'rgba(168, 85, 247, 0.6)' :
-                          'rgba(236, 72, 153, 0.6)'
+                          i % 3 === 0
+                            ? "rgba(59, 130, 246, 0.6)"
+                            : i % 3 === 1
+                              ? "rgba(168, 85, 247, 0.6)"
+                              : "rgba(236, 72, 153, 0.6)"
                         }`,
                       }}
                     />
@@ -128,18 +171,30 @@ export default function TechStack() {
                 {/* Rotating rings */}
                 <motion.div
                   className="absolute inset-0 border-2 border-blue-500/20 rounded-full"
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                  animate={isCurrentlyInView ? { rotate: 360 } : { rotate: 0 }}
+                  transition={{
+                    duration: 20,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
                 />
                 <motion.div
                   className="absolute inset-8 border-2 border-purple-500/20 rounded-full"
-                  animate={{ rotate: -360 }}
-                  transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
+                  animate={isCurrentlyInView ? { rotate: -360 } : { rotate: 0 }}
+                  transition={{
+                    duration: 15,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
                 />
                 <motion.div
                   className="absolute inset-16 border-2 border-pink-500/20 rounded-full"
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+                  animate={isCurrentlyInView ? { rotate: 360 } : { rotate: 0 }}
+                  transition={{
+                    duration: 25,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
                 />
               </div>
             </motion.div>
@@ -149,16 +204,17 @@ export default function TechStack() {
         {/* Heading */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          animate={hasEntered ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.2 }}
           className="relative text-center z-30 -translate-y-10 mb-16 px-6 md:px-8"
           style={{
-            textShadow: '0px 4px 8px rgba(255,255,255,.05), 0px 8px 30px rgba(255,255,255,.25)',
+            textShadow:
+              "0px 4px 8px rgba(255,255,255,.05), 0px 8px 30px rgba(255,255,255,.25)",
           }}
         >
           <motion.p
             initial={{ opacity: 0, y: -10 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            animate={hasEntered ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.3 }}
             className="mb-4 font-mono text-xs md:text-sm uppercase tracking-widest text-white/70"
           >
@@ -168,18 +224,28 @@ export default function TechStack() {
           <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-serif tracking-tight text-white overflow-visible">
             <motion.span
               initial={{ opacity: 0, x: -20 }}
-              animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.4, type: 'spring', stiffness: 100 }}
+              animate={hasEntered ? { opacity: 1, x: 0 } : {}}
+              transition={{
+                duration: 0.6,
+                delay: 0.4,
+                type: "spring",
+                stiffness: 100,
+              }}
               className="inline-block"
             >
               The Secret
-            </motion.span>{' '}
+            </motion.span>{" "}
             <motion.span
               initial={{ opacity: 0, x: 20 }}
-              animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.5, type: 'spring', stiffness: 100 }}
+              animate={hasEntered ? { opacity: 1, x: 0 } : {}}
+              transition={{
+                duration: 0.6,
+                delay: 0.5,
+                type: "spring",
+                stiffness: 100,
+              }}
               className="inline-block bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent italic animate-gradient-x"
-              style={{ WebkitTextFillColor: 'transparent' }}
+              style={{ WebkitTextFillColor: "transparent" }}
             >
               Sauce
             </motion.span>
@@ -189,19 +255,19 @@ export default function TechStack() {
           <div className="flex items-center justify-center gap-4 mt-6">
             <motion.div
               initial={{ width: 0 }}
-              animate={isInView ? { width: '60px' } : {}}
+              animate={hasEntered ? { width: "60px" } : {}}
               transition={{ duration: 0.8, delay: 0.6 }}
               className="h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent"
             />
             <motion.div
               initial={{ scale: 0 }}
-              animate={isInView ? { scale: 1 } : {}}
+              animate={hasEntered ? { scale: 1 } : {}}
               transition={{ duration: 0.5, delay: 0.8 }}
               className="w-1.5 h-1.5 rounded-full bg-blue-500"
             />
             <motion.div
               initial={{ width: 0 }}
-              animate={isInView ? { width: '60px' } : {}}
+              animate={hasEntered ? { width: "60px" } : {}}
               transition={{ duration: 0.8, delay: 0.6 }}
               className="h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent"
             />
@@ -211,20 +277,20 @@ export default function TechStack() {
         {/* Skills Grid - Desktop */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          animate={hasEntered ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.4 }}
           className="hidden md:block w-full max-w-5xl mx-auto relative"
-          style={{ perspective: '1000px' }}
+          style={{ perspective: "1000px" }}
         >
           {skillRows.map((row, rowIndex) => (
             <motion.div
               key={rowIndex}
               initial={{ opacity: 0, rotateX: 45, z: -100 }}
-              animate={isInView ? { opacity: 1, rotateX: 0, z: 0 } : {}}
+              animate={hasEntered ? { opacity: 1, rotateX: 0, z: 0 } : {}}
               transition={{
                 duration: 0.8,
                 delay: 0.6 + rowIndex * 0.15,
-                type: 'spring',
+                type: "spring",
                 stiffness: 80,
               }}
               className="mb-3 flex flex-wrap justify-center gap-3"
@@ -234,15 +300,19 @@ export default function TechStack() {
                   key={skill}
                   className="relative group"
                   initial={{ opacity: 0, scale: 0.3, rotateY: -90 }}
-                  animate={isInView ? {
-                    opacity: 1,
-                    scale: 1,
-                    rotateY: 0,
-                  } : {}}
+                  animate={
+                    hasEntered
+                      ? {
+                          opacity: 1,
+                          scale: 1,
+                          rotateY: 0,
+                        }
+                      : {}
+                  }
                   transition={{
                     duration: 0.6,
                     delay: 0.8 + rowIndex * 0.15 + index * 0.05,
-                    type: 'spring',
+                    type: "spring",
                     stiffness: 120,
                     damping: 12,
                   }}
@@ -250,19 +320,26 @@ export default function TechStack() {
                     scale: 1.15,
                     y: -8,
                     rotateZ: 5,
-                    transition: { duration: 0.3, type: 'spring', stiffness: 300 }
+                    transition: {
+                      duration: 0.3,
+                      type: "spring",
+                      stiffness: 300,
+                    },
                   }}
                   style={{
-                    transformOrigin: 'center center',
+                    transformOrigin: "center center",
                   }}
                 >
                   {/* Glow effect on hover */}
                   <motion.div
                     className="absolute inset-0 rounded-lg blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                     style={{
-                      background: rowIndex % 3 === 0 ? 'rgba(59, 130, 246, 0.5)' :
-                                  rowIndex % 3 === 1 ? 'rgba(168, 85, 247, 0.5)' :
-                                  'rgba(236, 72, 153, 0.5)',
+                      background:
+                        rowIndex % 3 === 0
+                          ? "rgba(59, 130, 246, 0.5)"
+                          : rowIndex % 3 === 1
+                            ? "rgba(168, 85, 247, 0.5)"
+                            : "rgba(236, 72, 153, 0.5)",
                     }}
                   />
 
@@ -282,7 +359,7 @@ export default function TechStack() {
         {/* Skills Grid - Mobile (no 3D effects) */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          animate={hasEntered ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.4 }}
           className="md:hidden w-full max-w-5xl mx-auto"
         >
@@ -292,31 +369,38 @@ export default function TechStack() {
                 key={skill}
                 className="relative group"
                 initial={{ opacity: 0, scale: 0.3, rotate: -45 }}
-                animate={isInView ? {
-                  opacity: 1,
-                  scale: 1,
-                  rotate: 0,
-                } : {}}
+                animate={
+                  hasEntered
+                    ? {
+                        opacity: 1,
+                        scale: 1,
+                        rotate: 0,
+                      }
+                    : {}
+                }
                 transition={{
                   duration: 0.5,
                   delay: 0.6 + index * 0.025,
-                  type: 'spring',
+                  type: "spring",
                   stiffness: 150,
                   damping: 10,
                 }}
                 whileHover={{
                   scale: 1.2,
                   y: -5,
-                  transition: { duration: 0.2 }
+                  transition: { duration: 0.2 },
                 }}
               >
                 {/* Glow effect on hover */}
                 <motion.div
                   className="absolute inset-0 rounded-lg blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                   style={{
-                    background: index % 3 === 0 ? 'rgba(59, 130, 246, 0.5)' :
-                                index % 3 === 1 ? 'rgba(168, 85, 247, 0.5)' :
-                                'rgba(236, 72, 153, 0.5)',
+                    background:
+                      index % 3 === 0
+                        ? "rgba(59, 130, 246, 0.5)"
+                        : index % 3 === 1
+                          ? "rgba(168, 85, 247, 0.5)"
+                          : "rgba(236, 72, 153, 0.5)",
                   }}
                 />
 
