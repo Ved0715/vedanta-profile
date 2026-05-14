@@ -1,91 +1,27 @@
-'use client';
-
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import SmoothScroll from '@/components/SmoothScroll';
-import SplashScreen from '@/components/SplashScreen';
-import Navigation from '@/components/layout/Navigation';
-import Hero from '@/components/sections/Hero';
-import About from '@/components/sections/About';
-import TechStack from '@/components/sections/TechStack';
-import Projects from '@/components/sections/Projects';
-import Testimonials from '@/components/sections/Testimonials';
-import Contact from '@/components/sections/Contact';
+import { Hero } from "@/components/sections/hero";
+import { Numbers } from "@/components/sections/numbers";
+import { About } from "@/components/sections/about";
+import { SelectedWork } from "@/components/sections/selected-work";
+import { Research } from "@/components/sections/research";
+import { Experience } from "@/components/sections/experience";
+import { Words } from "@/components/sections/words";
+import { Contact } from "@/components/sections/contact";
+import { SectionNavDots } from "@/components/layout/section-nav-dots";
 
 export default function HomePage() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [showContent, setShowContent] = useState(false);
-
-  useEffect(() => {
-    const updateMousePosition = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-
-    window.addEventListener('mousemove', updateMousePosition);
-    return () => window.removeEventListener('mousemove', updateMousePosition);
-  }, []);
-
   return (
     <>
-      {/* Splash Screen */}
-      <SplashScreen onComplete={() => setShowContent(true)} />
-
-      {/* Main Content */}
-      {showContent && (
-        <SmoothScroll>
-          <div className="relative min-h-screen bg-neutral-950 text-white">
-            {/* Cursor follower */}
-            <motion.div
-              className="fixed w-4 h-4 bg-blue-500/20 rounded-full pointer-events-none z-50 mix-blend-difference"
-              animate={{
-                x: mousePosition.x - 8,
-                y: mousePosition.y - 8,
-              }}
-              transition={{
-                type: "spring",
-                stiffness: 500,
-                damping: 28,
-              }}
-            />
-
-            {/* Subtle grid overlay */}
-            <div className="fixed inset-0 opacity-[0.02] pointer-events-none">
-              <div className="absolute inset-0" style={{
-                backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)`,
-                backgroundSize: '40px 40px'
-              }} />
-            </div>
-
-            <Navigation />
-
-            <main className="">
-              <section id="home">
-                <Hero />
-              </section>
-
-              <section id="about">
-                <About />
-              </section>
-
-              <section id="skills">
-                <TechStack />
-              </section>
-
-              <section id="projects">
-                <Projects />
-              </section>
-
-              <section id="testimonials">
-                <Testimonials />
-              </section>
-
-              <section id="contact">
-                <Contact />
-              </section>
-            </main>
-          </div>
-        </SmoothScroll>
-      )}
+      <SectionNavDots />
+      <main>
+        <Hero />
+        <Numbers />
+        <About />
+        <SelectedWork />
+        <Research />
+        <Experience />
+        <Words />
+        <Contact />
+      </main>
     </>
   );
 }
