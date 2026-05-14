@@ -40,7 +40,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${sans.variable} ${serif.variable} ${mono.variable} dark`}>
+    <html lang="en" className={`${sans.variable} ${serif.variable} ${mono.variable} dark`} data-scroll-behavior="smooth">
       <body>
         <Background />
         <Cursor />
