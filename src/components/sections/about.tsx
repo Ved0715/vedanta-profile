@@ -1,12 +1,26 @@
 import { Reveal } from "@/components/ui/reveal";
 
-const SKILL_COLS = [
+type SkillCol = {
+  label: string;
+  badge: string;
+  count: number;
+  featured: string[];
+  items: string[];
+};
+
+const SKILL_COLS: SkillCol[] = [
   {
-    title: "// languages",
+    label: "languages",
+    badge: "L",
+    count: 8,
+    featured: ["Python", "TypeScript"],
     items: ["Python", "TypeScript", "JavaScript", "C++", "SQL", "Go", "Bash", "HTML / CSS"],
   },
   {
-    title: "// frameworks",
+    label: "frameworks",
+    badge: "F",
+    count: 17,
+    featured: ["Next.js", "FastAPI", "LangChain", "LangGraph", "MCP"],
     items: [
       "Next.js",
       "React",
@@ -28,7 +42,10 @@ const SKILL_COLS = [
     ],
   },
   {
-    title: "// infra",
+    label: "infra",
+    badge: "I",
+    count: 20,
+    featured: ["Docker", "AWS", "PostgreSQL", "Redis", "Kafka", "Pinecone"],
     items: [
       "Docker",
       "Kubernetes",
@@ -53,7 +70,10 @@ const SKILL_COLS = [
     ],
   },
   {
-    title: "// focus",
+    label: "focus",
+    badge: "*",
+    count: 12,
+    featured: ["Multi-agent systems", "Agent orchestration", "RAG at scale"],
     items: [
       "Multi-agent systems",
       "Agent orchestration",
@@ -71,25 +91,6 @@ const SKILL_COLS = [
   },
 ];
 
-const colTitle: React.CSSProperties = {
-  fontFamily: "var(--mono)",
-  fontSize: 11,
-  color: "var(--accent)",
-  letterSpacing: "0.12em",
-  textTransform: "uppercase",
-  marginBottom: 14,
-};
-
-const list: React.CSSProperties = {
-  listStyle: "none",
-  display: "flex",
-  flexDirection: "column",
-  gap: 8,
-  fontFamily: "var(--mono)",
-  fontSize: 13,
-  color: "var(--text-2)",
-};
-
 export function About() {
   return (
     <section id="about">
@@ -98,7 +99,14 @@ export function About() {
           <span className="num">§ 02</span> · About
         </Reveal>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1.1fr 1fr", gap: 80, alignItems: "flex-start" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1.1fr 1fr",
+            gap: 80,
+            alignItems: "flex-start",
+          }}
+        >
           <Reveal>
             <h2 style={{ maxWidth: "16ch", marginBottom: 32 }}>
               I build the{" "}
@@ -126,15 +134,26 @@ export function About() {
           </Reveal>
 
           <Reveal delay={1}>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32 }}>
+            <div className="skill-stack">
               {SKILL_COLS.map((col) => (
-                <div key={col.title}>
-                  <div style={colTitle}>{col.title}</div>
-                  <ul style={list}>
+                <div key={col.label} className="skill-cat">
+                  <div className="skill-cat-head">
+                    <span className="skill-cat-badge">{col.badge}</span>
+                    <span className="skill-cat-label">{col.label}</span>
+                    <span className="skill-cat-count">
+                      {String(col.count).padStart(2, "0")}
+                    </span>
+                  </div>
+                  <div className="skill-chips">
                     {col.items.map((s) => (
-                      <li key={s}>{s}</li>
+                      <span
+                        key={s}
+                        className={`skill-chip${col.featured.includes(s) ? " featured" : ""}`}
+                      >
+                        {s}
+                      </span>
                     ))}
-                  </ul>
+                  </div>
                 </div>
               ))}
             </div>

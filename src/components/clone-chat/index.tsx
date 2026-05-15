@@ -29,6 +29,7 @@ function mockReply(q: string): string {
 
 export function CloneChat() {
   const [open, setOpen] = useState(false);
+  const [hiddenByFooter, setHiddenByFooter] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([
     { role: "bot", text: INITIAL_BOT_GREETING },
   ]);
@@ -48,6 +49,19 @@ export function CloneChat() {
     const onOpen = () => setOpen(true);
     window.addEventListener("clone-chat:open", onOpen);
     return () => window.removeEventListener("clone-chat:open", onOpen);
+  }, []);
+
+  // Hide the toggle when the footer is in view — otherwise the floating
+  // pill obscures the bottom copyright row, especially on mobile.
+  useEffect(() => {
+    const el = document.querySelector("footer");
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => setHiddenByFooter(e.isIntersecting),
+      { threshold: 0.05 },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
   }, []);
 
   const send = useCallback(
@@ -76,7 +90,15 @@ export function CloneChat() {
 
   return (
     <>
-      <button className="clone-toggle" aria-label="Ask my clone" onClick={() => setOpen((o) => !o)}>
+      <button
+        className="clone-toggle"
+        aria-label="Ask my clone"
+        onClick={() => setOpen((o) => !o)}
+        style={{
+          opacity: hiddenByFooter && !open ? 0 : 1,
+          pointerEvents: hiddenByFooter && !open ? "none" : "auto",
+        }}
+      >
         <div className="avatar">V</div>
         <span>Ask my clone</span>
         <span className="live" />

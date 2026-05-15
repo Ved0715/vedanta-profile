@@ -1046,11 +1046,343 @@ p { color: var(--text-2); font-size: 17px; line-height: 1.65; }
   .cmdk-group { padding: 12px 16px 4px; }
 }
 
-/* ---------- RESPONSIVE ---------- */
+/* ---------- SKILLS STACK ---------- */
+.skill-stack {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px 32px;
+}
+.skill-cat-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--hairline);
+}
+.skill-cat-badge {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-line);
+  border-radius: 6px;
+  line-height: 1;
+}
+.skill-cat-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.skill-cat-count {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-3);
+  letter-spacing: 0.1em;
+}
+.skill-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.skill-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 11px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: -0.005em;
+  color: var(--text-2);
+  background: var(--bg-elev-1);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  transition: color 0.18s var(--ease), border-color 0.18s var(--ease),
+    background 0.18s var(--ease), transform 0.18s var(--ease), box-shadow 0.18s var(--ease);
+  cursor: default;
+  white-space: nowrap;
+}
+.skill-chip:hover {
+  color: var(--text);
+  border-color: var(--hairline-strong);
+  background: var(--bg-elev-2);
+  transform: translateY(-1px);
+}
+.skill-chip.featured {
+  color: var(--accent);
+  border-color: var(--accent-line);
+  background: var(--accent-soft);
+  position: relative;
+}
+.skill-chip.featured::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+  margin-right: 7px;
+}
+.skill-chip.featured:hover {
+  color: var(--text);
+  border-color: var(--accent);
+  background: rgba(124, 196, 240, 0.22);
+  box-shadow: var(--accent-glow);
+}
+
 @media (max-width: 768px) {
-  .container { padding: 0 20px; }
-  main > section { padding: 80px 0; }
-  .nav { padding: 14px 20px; }
-  .nav-links { display: none; }
-  .nav-cta { display: none; }
+  .skill-stack { grid-template-columns: 1fr; gap: 28px; }
+  .skill-chip { font-size: 11.5px; padding: 4px 9px; }
+}
+
+/* =========================================================
+   RESPONSIVE
+   The design ships many inline grids/styles. Attribute selectors
+   override them at narrow breakpoints without refactoring every
+   component. !important is intentional — required to win over inline.
+   ========================================================= */
+
+/* ----- TABLET (≤1100px) ----- */
+@media (max-width: 1100px) {
+  .container { max-width: 100%; padding: 0 28px; }
+  main > section { padding: 96px 0 !important; }
+  h1 { font-size: clamp(48px, 8vw, 88px) !important; }
+  h2 { font-size: clamp(34px, 5vw, 56px) !important; }
+
+  /* Generic: any wide 3-or-more-column grid drops to 2 columns. */
+  [style*="grid-template-columns: repeat(3"],
+  [style*="grid-template-columns: repeat(4"],
+  [style*="grid-template-columns: repeat(5"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Asymmetric two-column grids — keep two but loosen ratios. */
+  [style*="grid-template-columns: 1.4fr 1fr"],
+  [style*="grid-template-columns: 1.2fr 1fr"],
+  [style*="grid-template-columns: 1.1fr 1fr"] {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 32px !important;
+  }
+
+  /* Three-column blog layout (TOC | article | share) → single column,
+     hide the side panels so the article reads full width. */
+  [style*="grid-template-columns: 1fr minmax(0, 720px) 1fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+  }
+  [style*="grid-template-columns: 1fr minmax(0, 720px) 1fr"] > aside {
+    display: none !important;
+  }
+
+  /* Blog index sidebar */
+  [style*="grid-template-columns: 1fr 280px"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Experience timeline row */
+  [style*="grid-template-columns: 180px 1fr 220px"],
+  [style*="grid-template-columns: 200px 1fr 240px"] {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  [style*="grid-template-columns: 180px 1fr 220px"] > div:last-child,
+  [style*="grid-template-columns: 200px 1fr 240px"] > div:last-child {
+    padding-left: 0 !important;
+    border-left: 0 !important;
+  }
+
+  /* Case-study hero monogram column */
+  [style*="grid-template-columns: 140px 1fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+
+  /* Footer columns */
+  [style*="grid-template-columns: 2fr 1fr 1fr 1fr"] {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 32px !important;
+  }
+
+  /* Research card 3-column */
+  [style*="grid-template-columns: 280px 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Selected-work MCP featured card splits to single column */
+  [style*="grid-template-columns: 1fr 1fr"][style*="min-height: 360px"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Projects research card (auto auto) row */
+  [style*="grid-template-columns: 1fr auto"] {
+    grid-template-columns: 1fr !important;
+  }
+  [style*="grid-template-columns: 1fr auto"] > div:last-child {
+    padding-left: 0 !important;
+    border-left: 0 !important;
+  }
+}
+
+/* ----- FOOTER-SPECIFIC RESPONSIVE (overrides the generic 1fr rule below) ----- */
+@media (max-width: 768px) {
+  footer { padding: 56px 0 110px !important; }
+  /* Keep the link columns as a 2x2 grid on phones — denser than 1 col */
+  footer [style*="grid-template-columns: 2fr 1fr 1fr 1fr"] {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 28px 24px !important;
+    margin-bottom: 40px !important;
+  }
+  /* Bottom flex row: stack copyright above status on narrow screens */
+  footer > .container > div:last-child {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+    padding-top: 20px !important;
+  }
+  /* Inner-page footer's "Have a project in mind?" header row */
+  footer > .container > div:first-child[style*="justify-content:space-between"],
+  footer > .container > div:first-child[style*="justify-content: space-between"] {
+    align-items: flex-start !important;
+  }
+}
+
+/* ----- MOBILE (≤768px) ----- */
+@media (max-width: 768px) {
+  .container { padding: 0 20px !important; }
+  main > section { padding: 72px 0 !important; }
+
+  /* Nav */
+  .nav { padding: 12px 16px; }
+  .nav-links { display: none !important; }
+  .nav-cta { display: none !important; }
+  .nav-brand .meta { display: none; }
+  .cmdk-nav-btn { margin-right: 0; padding: 6px 8px; }
+
+  /* Hero */
+  #home { padding: 140px 0 60px !important; }
+  h1 { font-size: clamp(44px, 11vw, 72px) !important; }
+  h2 { font-size: clamp(28px, 7vw, 44px) !important; }
+  h3 { font-size: clamp(20px, 5vw, 28px) !important; }
+  .lede { font-size: clamp(16px, 4vw, 20px) !important; }
+
+  /* Generic: every grid stacks to one column on phone. */
+  [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  /* Numbers section — 5 stats wrap as 2 columns instead of 1
+     so the page doesn't feel like a kilometre of cards. */
+  #numbers [style*="grid-template-columns"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+    border-left: 0 !important;
+  }
+  #numbers [style*="grid-template-columns"] > div {
+    border-right: 1px solid var(--hairline) !important;
+    border-bottom: 1px solid var(--hairline) !important;
+    padding: 20px !important;
+  }
+
+  /* Sliced borders look noisy at phone width — neutralise the
+     "border-left" on the experience metric column. */
+  [style*="border-left: 1px solid var(--hairline)"] {
+    border-left: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  /* Filter bar can wrap */
+  .filter-bar {
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 6px;
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .filter-bar button { font-size: 12px; padding: 6px 12px; }
+
+  /* Floating widgets reposition so they don't overlap each other
+     or the content on a narrow screen. */
+  .clone-toggle { bottom: 16px; right: 16px; font-size: 12px; padding: 8px 14px 8px 10px; }
+  .back-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+  .float-contact { bottom: 16px; font-size: 12px; padding: 9px 16px 9px 12px; }
+  .clone-panel { right: 12px; bottom: 70px; width: calc(100vw - 24px); height: 70vh; }
+
+  /* Section markers tighter */
+  .section-marker { margin-bottom: 32px !important; }
+
+  /* Cards padding tighter */
+  .card { padding: 20px !important; }
+  .feature-card { padding: 18px !important; }
+  .metric-card { padding: 24px 20px !important; }
+
+  /* Case study hero monogram smaller */
+  .cs-hero .monogram { width: 88px !important; height: 88px !important; font-size: 48px !important; }
+
+  /* Project tiles wider band */
+  .tile-band { height: 140px !important; }
+  .tile-band .glyph { font-size: 56px !important; }
+
+  /* Article body */
+  .article { font-size: 16.5px; }
+  .article h2 { font-size: 28px !important; margin-top: 40px !important; }
+  .article h3 { font-size: 20px !important; }
+  .article p { font-size: 16.5px !important; }
+  .article pre { padding: 16px !important; font-size: 12.5px !important; }
+
+  /* Pills wrap nicely instead of overflowing */
+  [style*="flex-wrap: wrap"] { row-gap: 8px !important; }
+
+  /* Forms */
+  input, textarea { font-size: 16px !important; /* prevent iOS zoom */ }
+}
+
+/* ----- SMALL MOBILE (≤480px) ----- */
+@media (max-width: 480px) {
+  .container { padding: 0 16px !important; }
+  main > section { padding: 56px 0 !important; }
+  h1 { font-size: clamp(36px, 12vw, 56px) !important; }
+  h2 { font-size: clamp(24px, 8vw, 36px) !important; }
+
+  /* Numbers down to single column on very small phones */
+  #numbers [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+  #numbers [style*="grid-template-columns"] > div {
+    border-right: 0 !important;
+  }
+
+  /* Stat blocks inside experience cards */
+  .serif { line-height: 1 !important; }
+
+  /* Footer to single column */
+  footer [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Reduce floating button overlap further */
+  .float-contact, .clone-toggle, .back-top { font-size: 11.5px; }
+}
+
+/* ----- LARGE MOBILE LANDSCAPE / SMALL TABLET ----- */
+@media (min-width: 769px) and (max-width: 900px) {
+  /* Tame oversized hero stack on iPad-portrait-ish widths */
+  #home { padding: 160px 0 80px !important; }
+}
+
+/* ----- PRINT (basic, for the resume page) ----- */
+@media print {
+  .nav, .cursor-ring, .cursor-dot, .scroll-progress,
+  .bg-grid, .bg-noise, .bg-aurora,
+  .float-contact, .back-top, .clone-toggle, .clone-panel,
+  .section-nav, .cmdk-backdrop, .cmdk-toast {
+    display: none !important;
+  }
+  body { background: white !important; color: black !important; }
 }

@@ -10,6 +10,7 @@ export function FloatingWidgets() {
 
   const [scrolled, setScrolled] = useState(false);
   const [contactInView, setContactInView] = useState(false);
+  const [footerInView, setFooterInView] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 600);
@@ -18,6 +19,7 @@ export function FloatingWidgets() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Watch the contact section (home only) — float-contact hides while it's in view.
   useEffect(() => {
     if (!isHome) {
       setContactInView(false);
@@ -32,8 +34,24 @@ export function FloatingWidgets() {
     return () => obs.disconnect();
   }, [isHome, pathname]);
 
-  const showFloat = scrolled && !contactInView;
-  const showBackTop = scrolled && contactInView;
+  // Watch the footer on every page — when it's visible the floating widgets
+  // would overlap the copyright row, so hide them. Also gives the clone-toggle
+  // and back-top a clean ledge to disappear at.
+  useEffect(() => {
+    const el = document.querySelector("footer");
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => setFooterInView(e.isIntersecting),
+      { threshold: 0.05 },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [pathname]);
+
+  const showFloat = scrolled && !contactInView && !footerInView;
+  // back-to-top shows when scrolled past the contact section OR when the footer
+  // is in view on inner pages (where there's no contact section to anchor to).
+  const showBackTop = scrolled && (contactInView || (!isHome && footerInView));
 
   const contactHref = isHome ? "#contact" : "/#contact";
 
